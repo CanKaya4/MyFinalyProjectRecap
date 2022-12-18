@@ -181,6 +181,37 @@ içerisine Messages isimli bir class oluşturup
 2 adet field tanımladım. Tekrar tekrar ürün başarılı veya ürün ismi hatalı şeklinde mesaj yazmıyorum.
 Artık Messages classını çağırıp orda tanımlı elemanlar vasıtasıyla yapıyorum.
 
+11. Gün
+Eğer .Net 6.0 sürümü ile Api geliştiriyosanız, Solution üzerinde yeni proje oluştururken ASP. NET Core Web API'yi kullanın. 
+Ve .net 6.0 sürümünde startup.cs projesi olmadığı için startup'a yazılacak olan kodları program.cs'de  builder.Services.AddSwaggerGen(); metodunun altına yazın. Yani şöyle:
+builder.Services.AddSwaggerGen();
+builder.Services.AddSingleton();
+builder.Services.AddSingleton();
+
+asp.net : microsoft'un web geliştirme ortamının ve bunları içeren kütüphanelerin toplandığı yapının ta kendisidir.
+web api : restfull mimariyi destekler. Restful mimari ile çalışma ortamı sunar. Restful mimari geliştirdiğimiz .net'i tanımayan bir java,codlin veya ios uygulamasını, sistemimiz ile iletişim kurabilmesini sağlayan ortamdır.
+Solutiona'a yeni bir proje ekliyoruz. Bu proje Api olacak.
+ASP.NET core web application'u seçiyoruz.
+
+Postman : Bizim test ortamımız.
+
+Bugüne kadar testlerimizi Console üzerinden yaptık. Artık ise WebAPI projemiz üzeriden testlerimizi yapıcaz.
+Controllers : Gelen bütün istekleri controller karşılar
+Route : istek yapılrıken, bize nasıl ulaşılması istendiğini belirtir.
+Controller'da yapılabilecek istekleri kodlarız.
+Restfull yapılar karşımıza http protokolü üzerinden gelir.
+
+Kendi Controller'ımızı yazacağız. Controller klasöründe sağ tıpklayıp new controller'ı seçiyoruz.
+Apı seçiliyken 3 farklı seçenek geliyor. Apı Controller - Empty seçiyoruz.
+Controller isimleri çoğul verilir. Products ismi veriyorum.
+ProductsController oluşturuyoruz.
+Controller'ın controller olabilmesi için ControllerBase'den inherit edilmesi ve ApiController attribute'unun olması gerekli.
+Controller içerisinde Get operasyonu oluşturup Return olarak "Merhaba" dedim ve operasyonun üstüne [HTTPGET] yazdım.
+return "Merhaba" kısmına bir breakpoint koydum.
+açılan tarayıcı sekmesinde Route ksımına göre girersek merhaba yazsını görürüz. tarayıcı sekmesine /api/products yazarsak bizim 
+oluşturduğumuz controller'a gelir.
+Şimdi bir test yazalım. string yerine List<Product> yazıp referans ekleyelim. ve 2 adet ürün ekleyelim.
+Referans olarak WebApı katmanı, Core'u Entities'i, Business'i ve DataAccess'i referans olarak ekliyoruz.
 */
 using Business.Concrete;
 using DataAccess.Concrete.EntityFramework;

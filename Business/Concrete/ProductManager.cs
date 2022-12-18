@@ -33,7 +33,7 @@ namespace Business.Concrete
 
         public IDataResult<List<Product>> GetAll()
         {
-            return new SuccessDataResult<List<Product>>(_ProductDal.GetAll());
+            return new SuccessDataResult<List<Product>>(_ProductDal.GetAll(),Messages.ProductList);
         }
 
         public IDataResult<List<Product>> GetAllByCategoryId(int id)

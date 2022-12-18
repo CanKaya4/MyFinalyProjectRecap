@@ -13,5 +13,6 @@ namespace Business.Constans
         public static string ProductAdded = "Ürün Eklendi."; 
         public static string ProductNameInValid = "Ürün ismi geçersiz.";
         public static string GetAllByCategoryListed = "Kategoriler Listelendi.";
+        public static string ProductList = "Ürünler Listelendi.";
     }
 }
