@@ -4,6 +4,7 @@ using DataAccess.Concrete.EntityFramework;
 using Entites.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Client;
 
 namespace WebAPI.Controllers
 {
@@ -11,12 +12,43 @@ namespace WebAPI.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        [HttpGet]
-        public List<Product> Get()
+        IProductService _productService;
+
+        public ProductsController(IProductService productService)
         {
-            IProductService productService = new ProductManager(new EfProductDal());
-            var result = productService.GetAll();
-            return result.Data;
+            _productService = productService;
+        }
+
+        [HttpGet("GetAll")]
+        public IActionResult GetAll()
+        {
+            
+            var result = _productService.GetAll();
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+        [HttpGet("GetById")]
+        public IActionResult GetById(int id)
+        {
+            var result =_productService.GetById(id);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+        [HttpPost("Add")]
+        public IActionResult Add(Product product)
+        {
+            var result = _productService.Add(product);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
         }
     }
 }

@@ -212,6 +212,20 @@ açılan tarayıcı sekmesinde Route ksımına göre girersek merhaba yazsını 
 oluşturduğumuz controller'a gelir.
 Şimdi bir test yazalım. string yerine List<Product> yazıp referans ekleyelim. ve 2 adet ürün ekleyelim.
 Referans olarak WebApı katmanı, Core'u Entities'i, Business'i ve DataAccess'i referans olarak ekliyoruz.
+
+ProductController içerisindeki bağımlığığı minimize etmek için IProductService'yi constructor injection yapıyoruz.
+
+IoC Container : İnversion of Control : Değişimin controlü
+WebAPİ'nin kendi içerisinde bir IoC yapısı var default olarak.
+AddSingleton : arkaplanda bir referans oluştur demek. Kısacası IoC'ler bizim yerimize newler.
+
+WebAPI katmanında Program cs içerisine builder.Services.AddSingleton<IProductService, ProductManager>();'ı ekliyoruz. Bu şu demek. IProductService gördüğün yerde 
+ProductManager'ı newleyebilirsin.
+
+Ancak projeyi bu şekilde çalıştırsak bile hata alırız. Çünkü bu sefer IProductDal hata döndürür. Bunun için Tekrardan
+builder.Services.AddSingleton<IProductDal, EfProductDal> şeklinde belirtmeliyiz.
+
+Aop : Bir metot başladığında veya bittiğinde veya hata verdiğinde çalışan kod parçacıklarını AOP mimarisi ile yazıyoruz.
 */
 using Business.Concrete;
 using DataAccess.Concrete.EntityFramework;

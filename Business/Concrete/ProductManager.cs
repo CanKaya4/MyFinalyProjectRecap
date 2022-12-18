@@ -23,7 +23,7 @@ namespace Business.Concrete
         public IResult Add(Product product)
         {
             //magic strings 
-            if (product.ProductName.Length>2)
+            if (product.ProductName.Length<2)
             {
                 return new ErrorResult(Messages.ProductNameInValid);
             }
@@ -33,6 +33,10 @@ namespace Business.Concrete
 
         public IDataResult<List<Product>> GetAll()
         {
+            if (DateTime.Now.Hour == 23)
+            {
+                return new ErrorDataResult<List<Product>>(_ProductDal.GetAll(), Messages.MaintanceTime);
+            }
             return new SuccessDataResult<List<Product>>(_ProductDal.GetAll(),Messages.ProductList);
         }
 
