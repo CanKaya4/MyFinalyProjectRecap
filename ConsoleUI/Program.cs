@@ -165,6 +165,22 @@ Adım Adım Order ekleme
 Dto : Data Transformation Object
 Join veya dto gibi işlemler için Entites katmanı altında DTOs klasörü açıyoruz.
 
+10. Gün
+EntityFramework'ü core katmanında base bir repository haline getirdik ve dataaccess içerisinde baya bir rahatladık.
+
+WebApi katmanı ekleyeceğiz. 
+
+WebApi : Örneğin yazdığımız bu .net core projesini ios,flutter veya angular için de geçerli olması için.
+
+Core karmanı içerisine Utilities klasörü oluşturup void metotlarım için Result ile ilgili işlemleri yazıyorum.
+List metotlarım için ise IDataResult oluşturuyorum.
+
+Business içerisinde Constans klasörü oluşturuyorum. 
+Constans : sabitler demek.
+içerisine Messages isimli bir class oluşturup
+2 adet field tanımladım. Tekrar tekrar ürün başarılı veya ürün ismi hatalı şeklinde mesaj yazmıyorum.
+Artık Messages classını çağırıp orda tanımlı elemanlar vasıtasıyla yapıyorum.
+
 */
 using Business.Concrete;
 using DataAccess.Concrete.EntityFramework;
@@ -189,9 +205,18 @@ class Program
     private static void ProductTest()
     {
         ProductManager productDals = new ProductManager(new EfProductDal());
-        foreach (var item in productDals.GetProductDetails())
+        var result = productDals.GetProductDetails();
+        if (result.Success==true)
         {
-            Console.WriteLine(item.ProductName + " / " + item.CategoryyName);
+            foreach (var item in result.Data)
+            {
+                Console.WriteLine(item.ProductName + " / " + item.CategoryyName);
+            }
         }
+        else
+        {
+            Console.WriteLine(result.Message);
+        }
+       
     }
 }

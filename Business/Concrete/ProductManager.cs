@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Constans;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entites.Concrete;
 using Entites.DTOs;
@@ -18,24 +20,42 @@ namespace Business.Concrete
             _ProductDal = productDal;
         }
 
-        public List<Product> GetAll()
+        public IResult Add(Product product)
         {
-            return _ProductDal.GetAll();
+            //magic strings 
+            if (product.ProductName.Length>2)
+            {
+                return new ErrorResult(Messages.ProductNameInValid);
+            }
+           _ProductDal.Add(product);
+            return new SuccessResult(Messages.ProductAdded);
         }
 
-        public List<Product> GetAllByCategoryId(int id)
+        public IDataResult<List<Product>> GetAll()
         {
-            return _ProductDal.GetAll(p=>p.CategoryId == id);
+            return new SuccessDataResult<List<Product>>(_ProductDal.GetAll());
         }
 
-        public List<Product> GetByUnitPrice(decimal max, decimal min)
-        {
-            return _ProductDal.GetAll(p=>p.UnitPrice>=min && p.UnitPrice<=max);
+        public IDataResult<List<Product>> GetAllByCategoryId(int id)
+        {   
+            return new SuccessDataResult<List<Product>>(_ProductDal.GetAll(p=>p.CategoryId == id), Messages.GetAllByCategoryListed);
         }
 
-        public List<ProductDetailDto> GetProductDetails()
+        public IDataResult<Product> GetById(int productId)
         {
-            return _ProductDal.GetProductDetails();
+            return new SuccessDataResult<Product>(_ProductDal.Get(p=>p.ProductId == productId),Messages.ProductNameInValid);
         }
+
+        public IDataResult<List<Product>>  GetByUnitPrice(decimal max, decimal min)
+        {
+            return new SuccessDataResult<List<Product>>(_ProductDal.GetAll(p=>p.UnitPrice>=min && p.UnitPrice<=max));
+        }
+
+        public IDataResult<List<ProductDetailDto>> GetProductDetails()
+        {
+            return new SuccessDataResult<List<ProductDetailDto>>(_ProductDal.GetProductDetails(), Messages.ProductAdded);
+        }
+
+        
     }
 }
