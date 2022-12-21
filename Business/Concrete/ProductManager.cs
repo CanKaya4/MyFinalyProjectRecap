@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ValidationException = System.ComponentModel.DataAnnotations.ValidationException;
 using Core.CrossCuttingConcerns.Validation;
+using Core.Aspects.Autofac.Validation;
 
 namespace Business.Concrete
 {
@@ -26,6 +27,7 @@ namespace Business.Concrete
             _ProductDal = productDal;
         }
 
+        [ValidationAspect(typeof(ProductValidator))]
         public IResult Add(Product product)
         {
 
@@ -39,7 +41,7 @@ namespace Business.Concrete
            // {
            //     throw new ValidationException(result.Errors);
            // }
-           ValidationTool.Validate(new ProductValidator(),product);
+          
            _ProductDal.Add(product);
             return new SuccessResult(Messages.ProductAdded);
         }
