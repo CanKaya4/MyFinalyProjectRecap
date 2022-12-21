@@ -15,5 +15,6 @@ namespace Business.Constans
         public static string GetAllByCategoryListed = "Kategoriler Listelendi.";
         public static string ProductList = "Ürünler Listelendi.";
         public static string MaintanceTime = "Sistem Bakımda.";
+        public static string UnitPriceInvalid = "Ürün fiyatı geçersiz.";
     }
 }

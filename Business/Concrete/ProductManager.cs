@@ -1,14 +1,20 @@
 ﻿using Business.Abstract;
 using Business.Constans;
+    using FluentValidation;
+using Business.ValidationRules.FluentValidation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entites.Concrete;
 using Entites.DTOs;
+using FluentValidation;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ValidationException = System.ComponentModel.DataAnnotations.ValidationException;
+using Core.CrossCuttingConcerns.Validation;
 
 namespace Business.Concrete
 {
@@ -22,11 +28,18 @@ namespace Business.Concrete
 
         public IResult Add(Product product)
         {
-            //magic strings 
-            if (product.ProductName.Length<2)
-            {
-                return new ErrorResult(Messages.ProductNameInValid);
-            }
+
+            //ProductValidator'u kullanmak için ProductManager içerisinde yazmamammız gereken kod.
+            //Ancak bunu farklı projelerde de kullanacağım ve tekrar tekrar yazmak ile uğraşmak yerine bir tool(araç haline) getişrmtmek istiyorum.
+            //Bunun için de Core katmanını kullanacağım.
+           //var context = new ValidationContext<Product>(product);
+           // ProductValidator productValidator = new ProductValidator();
+           // var result = productValidator.Validate(context);
+           // if (!result.IsValid)
+           // {
+           //     throw new ValidationException(result.Errors);
+           // }
+           ValidationTool.Validate(new ProductValidator(),product);
            _ProductDal.Add(product);
             return new SuccessResult(Messages.ProductAdded);
         }

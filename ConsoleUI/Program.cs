@@ -226,6 +226,59 @@ Ancak projeyi bu şekilde çalıştırsak bile hata alırız. Çünkü bu sefer 
 builder.Services.AddSingleton<IProductDal, EfProductDal> şeklinde belirtmeliyiz.
 
 Aop : Bir metot başladığında veya bittiğinde veya hata verdiğinde çalışan kod parçacıklarını AOP mimarisi ile yazıyoruz.
+
+Delegeler : elçi diye de geçer, tam olarak gerçek hayattaki anlamı gibidir.
+
+12. Gün
+        HTTP Statü kodları
+200(OK) Yanıtın başarılı olduğunu gösterir. İstemci ile sunucu arasındaki
+iletişim herhangi bir hata olmadan yürütülür.
+
+201(Created) Sunucu tarafından isteğin yerine getirildiği ve yeni bir kaynak oluşturulduğunu gösterir.
+
+301 Bir sayfanın kalıcı olarak başka bir web sayfasına yönlendirildiği ve
+bu sayfayı ziyatet edenlerin de otomatik olarak yönlenmesini sağlar.
+ 					
+400 Yapılan isteğin hatalı olduğunu gösterir.	
+
+401 Talebin kabul edilebilmesi için geçerli kimlik bilgilerine sahip olması beklenir.
+
+403 İstek gönderilen adreste veya kaynakta sorguların yasaklandığını belirtir.
+
+404 Sayfa bulunamadı.
+
+500 Sunucuda bir hata oluştu ve istek karşılanmadı.
+
+502 Hatalı ağ geçidi. Genellikle internet sitesinin  farklı bir internet sitesinden veri alışverişinde geçersiz cevap alması sonucu ortaya çıkar.
+
+IoC : Controller classı içerisinde programcs dosyası içine yazdığımız AddSingleton kodları.
+IoC yapılandırmasını için autofac yapılandırması kuracağız. Çünkü birden fazla api veya farklı servis yapıları kullanmamız gerekirse diye.
+Business için nuget packages'i açıyoruz autofac ve autofac.extras.dynamicProxy paketlerini business katmanına kuruyoruz.
+Business içerisinde DependencyResolvers isimli klasör oluşturuyoruz. Türkçesi Bapımlılık çözümleyiciler.    
+DependencyResolvers içerisinde IProduct'ın karşılığı nedir ? IProductService'nin karşılığı nedir ? bunları autofac kullanarak yapılandırıyor olacağız.
+Yani autofac isimli bir teknoloji kullacağız. Her yeni teknolojiyi eklediğimizde klasörlendirme yapıyoruz. DependencyResolver klasörünün altına 
+kullacağımız teknoloji yani autofac klasörü açacağız.Autofac içerisinde bir bağımlılık konfigürasyonu yapacağız. AutofacBusinessModule isimli bir class ekliyoruz.
+içerisini doldurup daha sonra Controller katmanı içerisinden Programcs classına IoC yapılandırması olarak AutofacBusinessModule kullanacağımızı belirtiyoruz.
+
+FluentValidation yapacağız.
+Business kodları ayrı validation(doğrulama) kodları ayrı yazılır.
+
+Validation : Add metodunda eklemeye çalıştığımız nesneyi iş kurallarına dahil etmek için bu nesnenin yapısal olarak uygun olup olmadığını kontrol etmeye validation(doğrulama) deniyor.
+Validation'a örnek olarak, Bir sisteme kayıt olamaya çalışırken, kullanıcı adı min 2 karakter veya şifre max 15  karakter vs gibi kurallar  yani verinin yapısal durumu ile alakalı olan her şeye validation denir.
+
+Business Code : İş gereksinimlerimize, iş ihtiyaçlarımıza uygunluktur.
+Örneğin, Ehliyet alacak birine ehliyet verip vermemek için yaptığuınız kontrol Business COde'dur. İlk yardımdan 70 almısmı ? direksiyondan 80 almıs mı gibi
+
+Business içerisine mmanage nuget packages diyoruz.
+fluentvalidation isimli paketi business'e ekleyeceğiz
+fluentvalidation teknolojisini kullacağımız için ValidationRules isimli bir klasör oluşturuyoruz, bu klasörün içerisine de fluentvalidation isimli bir klasör oluşturuyoruzç Business katmanı içerisinde.
+ilk olarak product için bir validation yazacağız bundan dolayı ProductValidator isimli bir class oluşturuyoruz.
+
+Cross Cutting Concerns : Log, Cache, Transaction, Authorization, Validation, içerir
+
+Core katmmanı içerisine CrossCuttingConcerns  klasörü açıyorum. Validationlarımı oraya koyacağım.
+
+
 */
 using Business.Concrete;
 using DataAccess.Concrete.EntityFramework;
