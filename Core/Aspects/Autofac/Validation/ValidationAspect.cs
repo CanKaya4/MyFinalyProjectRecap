@@ -22,6 +22,7 @@ namespace Core.Aspects.Autofac.Validation
 
             _validatorType = validatorType;
         }
+        //Validition(Doğrulama) sadece metodun başında çalışır. Bundan dolayı MethodInterception'dan gelen OnBefore metodunu ovverride ediyoruz.
         protected override void OnBefore(IInvocation invocation)
         {
             var validator = (IValidator)Activator.CreateInstance(_validatorType);

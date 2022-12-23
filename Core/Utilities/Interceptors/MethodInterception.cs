@@ -4,6 +4,8 @@ namespace Core.Utilities.Interceptors
 {
     public abstract class MethodInterception : MethodInterceptionBaseAttribute
     {
+        //Virtual metot, ovverride ile ezmeni bekleyen metottur.
+        //invocation, ProductManager içerisindeki metotların. Örnek olarak add,update,delete,ByCategoryId vs gibi metotların
         protected virtual void OnBefore(IInvocation invocation) { }
         protected virtual void OnAfter(IInvocation invocation) { }
         protected virtual void OnException(IInvocation invocation, System.Exception e) { }

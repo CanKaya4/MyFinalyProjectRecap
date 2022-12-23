@@ -260,14 +260,6 @@ Yani autofac isimli bir teknoloji kullacağız. Her yeni teknolojiyi eklediğimi
 kullacağımız teknoloji yani autofac klasörü açacağız.Autofac içerisinde bir bağımlılık konfigürasyonu yapacağız. AutofacBusinessModule isimli bir class ekliyoruz.
 içerisini doldurup daha sonra Controller katmanı içerisinden Programcs classına IoC yapılandırması olarak AutofacBusinessModule kullanacağımızı belirtiyoruz.
 
-FluentValidation yapacağız.
-Business kodları ayrı validation(doğrulama) kodları ayrı yazılır.
-
-Validation : Add metodunda eklemeye çalıştığımız nesneyi iş kurallarına dahil etmek için bu nesnenin yapısal olarak uygun olup olmadığını kontrol etmeye validation(doğrulama) deniyor.
-Validation'a örnek olarak, Bir sisteme kayıt olamaya çalışırken, kullanıcı adı min 2 karakter veya şifre max 15  karakter vs gibi kurallar  yani verinin yapısal durumu ile alakalı olan her şeye validation denir.
-
-Business Code : İş gereksinimlerimize, iş ihtiyaçlarımıza uygunluktur.
-Örneğin, Ehliyet alacak birine ehliyet verip vermemek için yaptığuınız kontrol Business COde'dur. İlk yardımdan 70 almısmı ? direksiyondan 80 almıs mı gibi
 
 Business içerisine mmanage nuget packages diyoruz.
 fluentvalidation isimli paketi business'e ekleyeceğiz
@@ -278,6 +270,33 @@ Cross Cutting Concerns : Log, Cache, Transaction, Authorization, Validation, iç
 
 Core katmmanı içerisine CrossCuttingConcerns  klasörü açıyorum. Validationlarımı oraya koyacağım.
 
+
+12. Gün Özet
+**Birbirinin alternatifi olan şeyleri her zaman interface ile implemente etmeliyiz. Örnek olarak Databaselog,FileLog vs gibi alternatifi olan yapıları ILogger ile implemente etmeliyiz.
+
+Business/DependyResolvers/Autofac/AutofacBusinessModule 
+Uygulamayı yayına aldığımızda içerisinde bulunan bütün bağımlılıkların arkaplanda newlerini oluşturuyor, bellekte referanslarını oluşturuyor. 
+Bunları Reflection ile yapıyor. WebApi içerisinde Programcs içerisne yazdığımız, IProductService Görürsen ProductManager instance'si oluştur gibi kodları içerir.
+
+Core/Utilities/Interceptors 
+Interceptors : araya girmek demek, yani metodun başında,sonunda veya metot hata verdiğinde gibi çalışmaktır.
+
+Core/Utilities/Interceptors/MethodIntercepton
+içerisinde virtual metotlar var. Virtual metot, senin ezmeni bekleyen metotlar demek. Bir aspect yazdığımızda, aspect metotun başında mı yoksa sonunda mı çalışsın
+istediğimiz zaman gidip o metodu ovverride ile eziyoruz.
+
+
+Core/Aspects/Autofac/ValiditionAspect
+Aspect, MethodInterception'u temel alan ve hangi virtual metot çalışsın istiyorsan onu içeren operasyon. Metodun başında sonunda veya hata verdiğinde çalışcak yapıya aspect diyoruz.
+MethodInterception'dan inherit ediliyor. ValiditionAspect'de diyor ki madem ben bir MethodIterception'um, benim virtual metotlarım var hangisini ovverride edeceksin.
+MethodInterception'dan gelen OnBefore metodunu ValiditionAspect içerisinde eziyorum.
+
+Core/CrossCuttingConcern/Validition/ValiditionTool
+Static bir sınıftı ve bir IValidator alıyor. IValidator ilgili metodun parametlerini doğrulamak istediğimiz fluentValidition classı, Yani doğrulama kurallarımıızn olduğu class
+ValiditonTool'da parametre olarak bir IValidator ver, Bu ProductValidator veya CategoryValidator olabilir. IValidator ProductValidator veya CategoryValidator'un referansını tutar
+2. parametre olarak da doğrulamak için object türünde bir entity ver, Örneğin Product veya category vs.
+IValidator : Doğrulama kurallarının olduğu class
+Entity : Doğrulanacak class
 
 */
 using Business.Concrete;
